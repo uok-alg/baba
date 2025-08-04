@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نقشه راه بهبودی شانه - آقای مصطفی خرمیان</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-blue-light: #3b82f6;
+            --primary-blue-dark: #1d4ed8;
+            --accent-green: #10b981;
+            --accent-green-light: #34d399;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --neutral-light: #f8fafc;
+            --neutral-medium: #64748b;
+            --neutral-dark: #1e293b;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--neutral-dark);
+            direction: rtl;
+            font-weight: 400;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .tab-active {
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-light) 100%);
+            color: white;
+            font-weight: 600;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+        }
+
+        .tab-inactive {
+            background: var(--glass-bg);
+            color: var(--neutral-medium);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-inactive:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .exercise-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-active .card-content {
+            max-height: 800px; /* Increased max-height for more content */
+        }
+
+        .expand-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        .card-active .expand-icon {
+            transform: rotate(45deg);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .safety-alert {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 2px solid #f87171;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .safety-alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-red) 0%, #fbbf24 100%);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="min-h-screen py-8 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header Section -->
+            <header class="text-center mb-12">
+                <div class="glass-card rounded-3xl p-8 mb-8">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gradient mb-4">
+                        نقشه راه بهبودی شانه
+                    </h1>
+						<p class="text-xl text-gray-600 mb-4">برنامه تمرینی برای آقای مصطفی خرمیان</p>
+            </header>
+
+            <!-- Patient Profile -->
+            <section class="mb-12">
+                <div class="glass-card rounded-3xl p-8">
+                    <h2 class="text-3xl font-bold text-gradient mb-6 text-center">پروفایل بیمار</h2>
+                    <div class="grid md:grid-cols-3 gap-8 items-center">
+                        <div class="md:col-span-2 space-y-4">
+                             <p class="text-gray-700 leading-relaxed">
+                                این برنامه توانبخشی برای یک بیمار مرد ۷۲ ساله با درد مزمن شانه طراحی شده است. هدف اصلی، بازگرداندن عملکرد ایمن و موثر شانه با توجه به مشکلات ساختاری شناسایی شده در MRI است.
+                            </p>
+                            <div class="bg-white/50 rounded-lg p-4">
+                               <h3 class="text-xl font-semibold text-gray-800 mb-4">یافته‌های کلیدی MRI</h3>
+                                <div class="grid sm:grid-cols-2 gap-4">
+                                    <div class="flex items-start"><span class="text-2xl ml-3">💥</span><span>پارگی جزئی تاندون سوپراسپیناتوس</span></div>
+                                    <div class="flex items-start"><span class="text-2xl ml-3">🩹</span><span>تندینوز بایسپس، ساب‌اسکاپولاریس و اینفراسپیناتوس</span></div>
+                                    <div class="flex items-start"><span class="text-2xl ml-3">💧</span><span>افیوژن بورس ساب‌آکرومیال و ساب‌دلتوئید</span></div>
+                                    <div class="flex items-start"><span class="text-2xl ml-3">🦴</span><span>دژنراسیون مفصل AC</span></div>
+                                    <div class="flex items-start"><span class="text-2xl ml-3">⚪️</span><span>تغییرات کیستیک توبروزیته کوچک</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center bg-gradient-to-br from-red-500 to-orange-400 p-6 rounded-2xl text-white shadow-lg">
+                            <p class="text-2xl font-semibold">سطح درد فعلی</p>
+                            <p class="text-7xl font-extrabold">۶<span class="text-4xl">/۱۰</span></p>
+                            <p class="font-medium">مزمن و پایدار</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Interactive Exercise Program -->
+            <section class="mb-12">
+                <div class="glass-card rounded-3xl p-8">
+                    <h2 class="text-3xl font-bold text-gradient text-center mb-6">برنامه تمرینی سه‌فازه تعاملی</h2>
+                    <p class="text-center text-gray-600 mb-8 text-lg leading-relaxed max-w-4xl mx-auto">
+                        این برنامه به سه فاز تقسیم شده است. با کلیک روی هر فاز، تمرینات مربوطه را مشاهده کنید. تنها زمانی به فاز بعد بروید که اهداف فاز فعلی را بدون درد شدید محقق کرده باشید.
+                    </p>
+                    
+                    <!-- Phase Tabs -->
+                    <div class="flex justify-center mb-8 gap-2 md:gap-4 flex-wrap">
+                        <button id="phase-1-tab" class="tab-btn px-6 py-3 md:px-8 md:py-4 rounded-2xl transition-all duration-300 tab-active">
+                            <span class="font-bold">فاز اول:</span><span class="block text-sm mt-1">مدیریت درد و تحرک</span>
+                        </button>
+                        <button id="phase-2-tab" class="tab-btn px-6 py-3 md:px-8 md:py-4 rounded-2xl transition-all duration-300 tab-inactive">
+                            <span class="font-bold">فاز دوم:</span><span class="block text-sm mt-1">بهبود کنترل کتف</span>
+                        </button>
+                        <button id="phase-3-tab" class="tab-btn px-6 py-3 md:px-8 md:py-4 rounded-2xl transition-all duration-300 tab-inactive">
+                            <span class="font-bold">فاز سوم:</span><span class="block text-sm mt-1">تقویت با شدت کم</span>
+                        </button>
+                    </div>
+
+                    <!-- Phase 1 Content -->
+                    <div id="phase-1-content" class="phase-content">
+                        <div class="text-center p-4 mb-6 bg-red-50 border-r-4 border-red-500 rounded-l-lg">
+                            <h3 class="font-bold text-xl text-gray-800">هدف: کاهش درد و بازیابی حرکت پایه</h3>
+                            <p class="mt-1 text-gray-700">تمرکز بر کاهش التهاب و انجام حرکات ملایم در دامنه بدون درد برای جلوگیری از خشکی مفصل.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۱. روش‌های مدیریت درد</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>گرما (قبل از تمرین):</strong> ۱۰-۱۵ دقیقه کمپرس گرم برای آرام‌سازی عضلات.</p><p class="mt-2"><strong>سرما (بعد از تمرین):</strong> ۱۰-۱۵ دقیقه کمپرس یخ برای کاهش التهاب.</p></div></div>
+                            <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۲. تمرینات آونگی (Pendulum)</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>نحوه انجام:</strong> به جلو خم شوید، با دست سالم از میز تکیه بگیرید و بازوی آسیب‌دیده را رها کنید. با حرکت بدن، بازو را به آرامی در جهات مختلف (جلو-عقب، طرفین، دایره‌ای) تاب دهید.</p><p class="mt-2"><strong>برنامه:</strong> ۲-۳ ست با ۱۰-۱۵ تکرار در هر جهت.</p><p class="mt-2"><strong>نکته کلیدی:</strong> حرکت باید کاملاً غیرفعال و با نیروی جاذبه باشد.</p></div></div>
+                            <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۳. فلکشن و ابداکشن خود-کمکی</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>نحوه انجام:</strong> به پشت دراز بکشید. با دست سالم، مچ دست آسیب‌دیده را بگیرید. به آرامی هر دو دست را به سمت بالای سر (فلکشن) یا به طرفین (ابداکشن) تا محدوده بدون درد (حداکثر ۹۰ درجه در ابتدا) بالا ببرید.</p><p class="mt-2"><strong>برنامه:</strong> ۲-۳ ست با ۱۰-۱۵ تکرار، با نگه داشتن ۲۰-۳۰ ثانیه در انتهای دامنه.</p></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2 Content -->
+                    <div id="phase-2-content" class="phase-content hidden">
+                        <div class="text-center p-4 mb-6 bg-yellow-50 border-r-4 border-yellow-500 rounded-l-lg">
+                            <h3 class="font-bold text-xl text-gray-800">هدف: بهبود کنترل کتف و وضعیت بدنی</h3>
+                            <p class="mt-1 text-gray-700">تمرکز بر فعال‌سازی عضلات کنترل‌کننده تیغه شانه (کتف) که برای حرکت صحیح شانه ضروری است.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۱. چرخش خارجی با کمک چوب</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>نحوه انجام:</strong> بنشینید یا دراز بکشید. یک چوب را با دو دست نگه دارید. آرنج‌ها را ۹۰ درجه خم و به پهلوها بچسبانید. با دست سالم، چوب را به بیرون فشار دهید تا بازوی آسیب‌دیده به صورت غیرفعال بچرخد.</p><p class="mt-2"><strong>برنامه:</strong> ۲-۳ ست با ۱۰-۱۵ تکرار. چرخش اولیه را به ۴۵ درجه محدود کنید.</p></div></div>
+                            <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۲. بالا انداختن شانه (Shrugs)</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>نحوه انجام:</strong> صاف بایستید یا بنشینید. شانه‌ها را به آرامی مستقیم به سمت گوش‌ها بالا ببرید و سپس به آرامی پایین بیاورید.</p><p class="mt-2"><strong>برنامه:</strong> ۲-۳ ست با ۱۰-۱۵ تکرار.</p></div></div>
+                            <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۳. جمع کردن کتف‌ها (Retraction)</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>نحوه انجام:</strong> صاف بایستید. تیغه‌های شانه را به آرامی به هم و کمی به سمت پایین فشار دهید، انگار می‌خواهید مدادی را بین آن‌ها نگه دارید. وضعیت بدنی صحیح را حفظ کنید.</p><p class="mt-2"><strong>برنامه:</strong> ۲-۳ ست با ۱۰-۱۵ تکرار، با نگه داشتن ۳-۵ ثانیه.</p></div></div>
+                            <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۴. شنای دیواری (Wall Push-ups)</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>نحوه انجام:</strong> روبروی دیوار بایستید. دست‌ها را کمی بازتر از عرض شانه روی دیوار قرار دهید. به آرامی آرنج‌ها را خم کرده و به دیوار نزدیک شوید و سپس به حالت اول بازگردید. بدن را صاف نگه دارید.</p><p class="mt-2"><strong>برنامه:</strong> ۲-۳ ست با ۱۰-۱۵ تکرار.</p></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 Content -->
+                    <div id="phase-3-content" class="phase-content hidden">
+                        <div class="text-center p-4 mb-6 bg-green-50 border-r-4 border-green-500 rounded-l-lg">
+                            <h3 class="font-bold text-xl text-gray-800">هدف: تقویت تدریجی و با شدت کم</h3>
+                            <p class="mt-1 text-gray-700">شروع تقویت عضلات روتاتور کاف و تثبیت‌کننده‌های کتف با مقاومت کم و تکرار بالا.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۱. ایزومتریک زیربیشینه</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>نحوه انجام:</strong> بازوی آسیب‌دیده را به آرامی به یک دیوار یا دست دیگر در جهات مختلف (جلو، عقب، طرفین، چرخش داخلی و خارجی) فشار دهید. تنها از ۳۰-۵۰٪ حداکثر تلاش خود استفاده کنید.</p><p class="mt-2"><strong>برنامه:</strong> ۲-۳ ست با ۵-۱۰ تکرار، با نگه داشتن ۵-۱۰ ثانیه. حتما عادی نفس بکشید.</p></div></div>
+                            <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۲. چرخش خارجی به پهلو خوابیده</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>نحوه انجام:</strong> به پهلوی سالم دراز بکشید، آرنج آسیب‌دیده ۹۰ درجه خم و به پهلو چسبیده باشد. با یک وزنه بسیار سبک (۰.۵-۱ کیلوگرم) یا بدون وزنه، ساعد را به سمت بالا بچرخانید.</p><p class="mt-2"><strong>برنامه:</strong> ۲-۳ ست با ۱۰-۱۵ تکرار.</p></div></div>
+                             <div class="exercise-card rounded-2xl overflow-hidden"><div class="exercise-header p-4 cursor-pointer flex justify-between items-center"><h4 class="text-lg font-semibold">۳. جلو بازو (Biceps Curls) و روئینگ نشسته (Seated Rows)</h4><span class="expand-icon">+</span></div><div class="card-content p-4 border-t"><p><strong>جلو بازو:</strong> بنشینید و با وزنه بسیار سبک، به آرامی آرنج را خم کنید.</p><p class="mt-2"><strong>روئینگ نشسته:</strong> با کش مقاومتی، صاف بنشینید و کش را به سمت شکم خود بکشید و کتف‌ها را به هم فشار دهید.</p><p class="mt-2"><strong>برنامه:</strong> ۲-۳ ست با ۱۰-۱۵ تکرار برای هر تمرین.</p></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Safety Section -->
+            <section class="mb-12">
+                 <div class="safety-alert rounded-3xl p-8">
+                    <h2 class="text-3xl font-bold text-center text-red-800 mb-6">اقدامات احتیاطی حیاتی</h2>
+                    <div class="grid md:grid-cols-3 gap-6 text-center">
+                        <div class="p-4">
+                            <h3 class="font-semibold text-xl text-red-700 mb-2">به بدن خود گوش دهید</h3>
+                            <p class="text-red-600 leading-relaxed">اگر تمرینی باعث درد شدید یا فزاینده شد، فوراً آن را متوقف کنید. ناراحتی خفیف طبیعی است، اما درد یک علامت هشدار است.</p>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-xl text-red-700 mb-2">از شدت بالا بپرهیزید</h3>
+                            <p class="text-red-600 leading-relaxed">تمرینات با حداکثر تلاش و به صورت مداوم، به ویژه با توجه به سن بیمار و خطرات قلبی احتمالی، ممنوع است.</p>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-xl text-red-700 mb-2">نفس خود را حبس نکنید!</h3>
+                            <p class="text-red-600 leading-relaxed">از مانور والسالوا (فشار آوردن با نفس حبس شده) که می‌تواند فشار خون را به طور خطرناکی بالا ببرد، خودداری کنید. به طور مداوم نفس بکشید.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="text-center mt-12 mb-8 text-gray-200 text-sm px-4">
+                <p>این اینفوگرافیک یک خلاصه بصری از یک گزارش توانبخشی دقیق است. این راهنما فقط برای اهداف اطلاعاتی است و جایگزین توصیه های پزشکی حرفه‌ای نیست. همیشه قبل از شروع هر برنامه ورزشی جدید با یک فیزیوتراپیست واجد شرایط مشورت کنید.</p>
+            </footer>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.phase-content');
+            const exerciseCards = document.querySelectorAll('.exercise-card');
+
+            // Tab functionality
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetId = tab.id.replace('-tab', '-content');
+
+                    tabs.forEach(t => {
+                        t.classList.remove('tab-active');
+                        t.classList.add('tab-inactive');
+                    });
+                    tab.classList.add('tab-active');
+                    tab.classList.remove('tab-inactive');
+
+                    contents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Accordion card functionality
+            exerciseCards.forEach(card => {
+                const header = card.querySelector('.exercise-header');
+                if (header) {
+                    header.addEventListener('click', () => {
+                        card.classList.toggle('card-active');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
